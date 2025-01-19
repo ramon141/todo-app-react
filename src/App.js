@@ -10,43 +10,16 @@ function App() {
   const [showListTasks, setShowListTasks] = useState([]);
   const [modeSort, setModeSort] = useState('Tudo');
 
-  const refreshList = () => {
-    axios.get('http://localhost:3001/tasks')
-      .then(res => {
-        setListTasks(res.data);
-      })
-  }
-
-  useEffect(() => {
-    refreshList();
-  }, []);
-
   const handleSubmit = (task) => {
-    axios.post('http://localhost:3001/tasks', task).then(() => {
-      refreshList();
-    });
   }
 
   const handleDelete = (id) => {
-    axios.delete(`http://localhost:3001/tasks/${id}`).then(() => {
-      refreshList();
-    });
   }
 
   const handleCheck = (task) => {
-    const data = { status: !task.status }
-
-    axios.patch(`http://localhost:3001/tasks/${task.id}`, data).then(() => {
-      refreshList();
-    });
   }
 
   const handleEdit = (task) => {
-    const data = { title: task.title, deadline: task.deadline }
-
-    axios.patch(`http://localhost:3001/tasks/${task.id}`, data).then(() => {
-      refreshList();
-    })
   }
 
   const handleSortList = (mode) => {
