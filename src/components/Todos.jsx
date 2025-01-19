@@ -13,7 +13,7 @@ const Tasks = ({ tasks, deleteHandler, checkHandler, editeHandler }) => {
                           />
                 )) : (
                     <div className="flex flex-col items-center w-2/5 bg-gray-300 font-medium rounded p-2">
-                        No Todo Found!
+                        Nenhum Todo Encontrado!
                     </div>
                 )
             }
@@ -22,3 +22,4 @@ const Tasks = ({ tasks, deleteHandler, checkHandler, editeHandler }) => {
 }
 
 export default Tasks;
+

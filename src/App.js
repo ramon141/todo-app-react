@@ -9,19 +9,19 @@ function App() {
     const todoData = [
         {
             _id: 1,
-            title: 'Read boyd language book',
+            title: 'Ler o livro de linguagem de programacao',
             status: false,
             deadline: dayjs('2020-09-18T17:11:54'),
         },
         {
             _id: 2,
-            title: 'Do My Home Work',
+            title: 'Fazer meu Trabalho de Casa',
             status: true,
             deadline: dayjs('2012-02-18T10:16:04'),
         },
         {
             _id: 3,
-            title: 'create mini project react',
+            title: 'Criar um mini-projeto em React',
             status: false,
             deadline: dayjs('2018-08-18T21:11:54'),
         },
@@ -29,7 +29,7 @@ function App() {
 
   const [listTasks, setListTasks] = useState(todoData);
   const [showListTasks, setShowListTasks] = useState([]);
-  const [modeSort, setModeSort] = useState('All');
+  const [modeSort, setModeSort] = useState('Tudo');
 
   const handleSubmit = (task) => {
     setListTasks([
@@ -80,11 +80,11 @@ function App() {
   }
 
   useEffect(() => {
-    if( modeSort === 'All') {
+    if( modeSort === 'Tudo') {
         setShowListTasks(
             listTasks
         )
-    } else if ( modeSort === 'Incomplete') {
+    } else if ( modeSort === 'Incompleto') {
         let sortedListTasks = listTasks.filter( t =>  !t.status  );
         setShowListTasks(
             sortedListTasks
@@ -115,3 +115,4 @@ function App() {
 }
 
 export default App;
+

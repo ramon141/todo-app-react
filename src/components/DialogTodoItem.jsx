@@ -70,11 +70,12 @@ const DialogTodoItem = ({ mode, open, setOpen, handleSubmit, taskEdited }) => {
                 ...taskEdited
             })
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
 
     return(
         <Dialog open={open} onClose={() => setOpen(false)} fullWidth={true} maxWidth="xs">
-            <DialogTitle>{ mode === 'add' ? "Add" : "Edit"} Task</DialogTitle>
+            <DialogTitle>{ mode === 'add' ? "Adicionar" : "Editar"} Tarefa</DialogTitle>
                 <DialogContent className="my-2 ">
                 <Box
                     component="form"
@@ -87,7 +88,7 @@ const DialogTodoItem = ({ mode, open, setOpen, handleSubmit, taskEdited }) => {
                         <TextField
                             name="title"
                             autoFocus
-                            label="Title"
+                            label="Título"
                             type="text"
                             fullWidth
                             value={task.title}
@@ -98,18 +99,18 @@ const DialogTodoItem = ({ mode, open, setOpen, handleSubmit, taskEdited }) => {
                             name="status"
                             select
                             label="Status"
-                            defaultValue="Incompelete"
+                            defaultValue="Incompleto"
                             fullWidth
                             value={task.status}
                             onChange={handleChangeTask}
                             required
                             >
-                                <MenuItem value={false}>Incompelete</MenuItem>
-                                <MenuItem value={true}>Compeleted</MenuItem>
+                                <MenuItem value={false}>Incompleto</MenuItem>
+                                <MenuItem value={true}>Completo</MenuItem>
                         </TextField>
                         <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <DateTimePicker
-                                label="Date&Time picker"
+                                label="Data e Hora"
                                 value={task.deadline}
                                 open={dateOpen}
                                 onOpen={() => setDateOpen(true)}
@@ -123,10 +124,10 @@ const DialogTodoItem = ({ mode, open, setOpen, handleSubmit, taskEdited }) => {
                 </DialogContent>
                 <DialogActions>
                     <button onClick={() => setOpen(false)}
-                    className="bg-gray-300 hover:bg-gray-200 text-gray-600 font-medium rounded-md px-5 py-2">Cancel</button>
+                    className="bg-gray-300 hover:bg-gray-200 text-gray-600 font-medium rounded-md px-5 py-2">Cancelar</button>
                     <button onClick={submitHandler}  type="submit"
                     className="bg-indigo-500 hover:bg-indigo-600 text-white font-medium rounded-md px-5 py-2">
-                        { mode === 'add' ? "Add" : "Edit"} Task</button>
+                        { mode === 'add' ? "Adicionar" : "Editar"} Tarefa</button>
                 </DialogActions>
         </Dialog>
     )
