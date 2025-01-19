@@ -18,10 +18,10 @@ const Task = ( { task, deleteHandler, checkHandler, editeHandler } ) => {
                     className={`text-gray-700 font-medium ${task.status && 'line-through'} `} >
                         {task.title}
                 </span>
-                <span className="text-xs text-gray-700">{task.deadline.$d.toLocaleString()}</span>
+                <span className="text-xs text-gray-700">{task.deadline}</span>
             </div>
             <div className="">
-                <button onClick={() => deleteHandler(task._id)}
+                <button onClick={() => deleteHandler(task.id)}
                  className="bg-gray-200 rounded-md p-1 mr-2"><DeleteIcon color="action" fontSize="small" /></button>
                 <button onClick={ () => setOpenEdit(true)}
                  className="bg-gray-200 rounded-md p-1"><EditIcon color="action" fontSize="small" /></button>

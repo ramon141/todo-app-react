@@ -2,77 +2,51 @@ import { useState, useEffect } from 'react';
 import './App.css';
 import Header from './components/Header';
 import Todos from './components/Todos';
-import dayjs from 'dayjs';
+import axios from 'axios';
 
 function App() {
 
-    const todoData = [
-        {
-            _id: 1,
-            title: 'Ler o livro de linguagem de programacao',
-            status: false,
-            deadline: dayjs('2020-09-18T17:11:54'),
-        },
-        {
-            _id: 2,
-            title: 'Fazer meu Trabalho de Casa',
-            status: true,
-            deadline: dayjs('2012-02-18T10:16:04'),
-        },
-        {
-            _id: 3,
-            title: 'Criar um mini-projeto em React',
-            status: false,
-            deadline: dayjs('2018-08-18T21:11:54'),
-        },
-    ]
-
-  const [listTasks, setListTasks] = useState(todoData);
+  const [listTasks, setListTasks] = useState([]);
   const [showListTasks, setShowListTasks] = useState([]);
   const [modeSort, setModeSort] = useState('Tudo');
 
-  const handleSubmit = (task) => {
-    setListTasks([
-        ...listTasks,
-        {
-            ...task,
-        }
-    ]);
+  const refreshList = () => {
+    axios.get('http://localhost:3001/tasks')
+      .then(res => {
+        setListTasks(res.data);
+      })
   }
 
-  const handleDelete = (_id) => {
-    setListTasks(
-        listTasks.filter( t => t._id !==  _id)
-    )
+  useEffect(() => {
+    refreshList();
+  }, []);
 
+  const handleSubmit = (task) => {
+    axios.post('http://localhost:3001/tasks', task).then(() => {
+      refreshList();
+    });
+  }
+
+  const handleDelete = (id) => {
+    axios.delete(`http://localhost:3001/tasks/${id}`).then(() => {
+      refreshList();
+    });
   }
 
   const handleCheck = (task) => {
-    setListTasks(
-        listTasks.map( t => {
-            if (t._id === task._id) {
-                let checkedTask = {
-                    ...task,
-                    status: !task.status,
-                }
-                return checkedTask;
-            } else {
-                return t;
-            }
-        })
-    );
+    const data = { status: !task.status }
+
+    axios.patch(`http://localhost:3001/tasks/${task.id}`, data).then(() => {
+      refreshList();
+    });
   }
 
   const handleEdit = (task) => {
-    setListTasks(
-        listTasks.map( t => {
-            if ( t._id === task._id) {
-                return task;
-            } else {
-                return t;
-            }
-        })
-    )
+    const data = { title: task.title, deadline: task.deadline }
+
+    axios.patch(`http://localhost:3001/tasks/${task.id}`, data).then(() => {
+      refreshList();
+    })
   }
 
   const handleSortList = (mode) => {
@@ -80,37 +54,37 @@ function App() {
   }
 
   useEffect(() => {
-    if( modeSort === 'Tudo') {
-        setShowListTasks(
-            listTasks
-        )
-    } else if ( modeSort === 'Incompleto') {
-        let sortedListTasks = listTasks.filter( t =>  !t.status  );
-        setShowListTasks(
-            sortedListTasks
-        )
+    if (modeSort === 'Tudo') {
+      setShowListTasks(
+        listTasks
+      )
+    } else if (modeSort === 'Incompleto') {
+      let sortedListTasks = listTasks.filter(t => !t.status);
+      setShowListTasks(
+        sortedListTasks
+      )
     } else {
-        let sortedListTasks = listTasks.filter( t => t.status  );
-        setShowListTasks(
-            sortedListTasks
-        )
+      let sortedListTasks = listTasks.filter(t => t.status);
+      setShowListTasks(
+        sortedListTasks
+      )
     }
-  },[listTasks, modeSort])
+  }, [listTasks, modeSort])
 
 
   return (
     <div className="flex flex-col items-center w-full h-full bg-white my-10 gap-6">
-            <h1 className="text-4xl font-bold uppercase text-gray-600">ToDo List</h1>
-            <Header 
-                handleSubmit={handleSubmit}
-                sortHandler={handleSortList}
-             />
-            <Todos 
-                tasks={showListTasks}
-                checkHandler={handleCheck}
-                deleteHandler={handleDelete}
-                editeHandler={handleEdit}  />
-        </div>
+      <h1 className="text-4xl font-bold uppercase text-gray-600">ToDo List</h1>
+      <Header
+        handleSubmit={handleSubmit}
+        sortHandler={handleSortList}
+      />
+      <Todos
+        tasks={showListTasks}
+        checkHandler={handleCheck}
+        deleteHandler={handleDelete}
+        editeHandler={handleEdit} />
+    </div>
   );
 }
 
